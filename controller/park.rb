@@ -1,25 +1,7 @@
 # frozen_string_literal: true
 
-require 'time'
-require 'sequel'
-
-DATABASE = Sequel.connect('postgres://localhost:5432/test')
-
-require_relative '../model/car'
-require_relative '../model/invoice'
-require_relative '../model/slot'
-
-# Controller module for parking
-module Park
-  def self.initialize_app
-    p Slot.count
-    return unless Slot.count.zero?
-
-    10.times do
-      Slot.create
-    end
-  end
-
+# Controller module for Parking Lot
+module ParkingLot
   def self.park_car(registration_number)
     car = Car.where(registration_number:).first
     car = Car.create(registration_number:) if car.nil?
