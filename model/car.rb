@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'sequel'
-
 # Class for Car
 class Car < Sequel::Model DATABASE[:cars]
   plugin :validation_helpers
