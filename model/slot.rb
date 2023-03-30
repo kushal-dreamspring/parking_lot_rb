@@ -6,6 +6,6 @@ class Slot < Sequel::Model DATABASE[:slots]
 
   def validate
     super
-    validates_unique :car_id, message: 'is already parked'
+    validates_unique :car_id
   end
 end
