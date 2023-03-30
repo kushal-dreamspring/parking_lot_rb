@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../model/car'
-require_relative '../../model/invoice'
-require_relative '../../model/slot'
-require_relative '../../controller/initialize_app'
-require_relative '../../controller/park'
-require_relative '../../controller/unpark'
-
 describe 'Initialize_app' do
 
   context 'when slots table is empty' do

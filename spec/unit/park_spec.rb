@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../model/car'
-require_relative '../../model/invoice'
-require_relative '../../model/slot'
-require_relative '../../controller/initialize_app'
-require_relative '../../controller/park'
-
 describe 'Park' do
   ParkingLot.initialize_app
 
@@ -27,15 +21,13 @@ describe 'Park' do
     registration_number = 'UP32EA7196'
 
     before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null'].update
-      ds = DATABASE['SELECT * FROM slots where car_id IS NOT NULL']
-      ds.each { |r| puts r[:car_id] }
+      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
     end
 
     it 'return the parking-slot-identifier' do
       response = ParkingLot.park_car(registration_number)
 
-      expect(response).to match(/car parked at \d/)
+      expect(response).to eq(1)
     end
 
     it 'should assign the car to a parking slot, add entry time at parking' do
@@ -60,7 +52,7 @@ describe 'Park' do
     it 'should not park a car' do
       response = ParkingLot.park_car(registration_number)
 
-      expect(response).to eq('car_id is already parked')
+      expect(response).to eq('Car already Parked')
     end
   end
 end

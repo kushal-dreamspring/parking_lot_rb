@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../model/car'
-require_relative '../../model/invoice'
-require_relative '../../model/slot'
-require_relative '../../controller/initialize_app'
-require_relative '../../controller/park'
-require_relative '../../controller/unpark'
-
 describe 'Unpark' do
   ParkingLot.initialize_app
 
@@ -41,6 +34,12 @@ describe 'Unpark' do
       slot_no = ParkingLot.get_slot_no(registration_number)
       ParkingLot.unpark_car(slot_no)
       expect(DATABASE[:slots].select(:car_id).where(id: slot_no).call(:first)[:car_id]).to be_nil
+    end
+
+    it 'should return the invoice' do
+      slot_no = ParkingLot.get_slot_no(registration_number)
+      invoice = ParkingLot.unpark_car(slot_no)
+      expect(invoice[:car_id]).not_to be_nil
     end
   end
 end

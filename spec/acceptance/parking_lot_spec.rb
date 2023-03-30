@@ -5,6 +5,15 @@ require 'sequel'
 
 DATABASE = Sequel.connect('postgres://localhost:5432/test')
 
+require_relative '../../model/car'
+require_relative '../../model/invoice'
+require_relative '../../model/slot'
+require_relative '../../controller/all_cars'
+require_relative '../../controller/initialize_app'
+require_relative '../../controller/invoice'
+require_relative '../../controller/park'
+require_relative '../../controller/unpark'
+
 RSpec.describe 'Parking' do
   it 'should park a car' do
     pending 'Not yet implemented'
