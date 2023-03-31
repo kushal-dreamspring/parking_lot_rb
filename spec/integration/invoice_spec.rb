@@ -5,12 +5,13 @@ describe 'Invoice' do
   registration_number = 'UP32EA7196'
   invoice = ''
 
-  context 'when invoice does not exist' do
-    before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
-      DATABASE['DELETE FROM invoices']
-    end
+  before do
+    DATABASE['UPDATE slots SET car_id = NULL, entry_time = NULL WHERE car_id IS NOT NULL']
+    DATABASE['DELETE FROM cars']
+    DATABASE['DELETE FROM invoices']
+  end
 
+  context 'when invoice does not exist' do
     it 'should return empty list' do
       invoices = ParkingLot.all_invoices
 
@@ -25,8 +26,6 @@ describe 'Invoice' do
 
   context 'after car has been unparked' do
     before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
-      DATABASE['DELETE FROM invoices']
       ParkingLot.park_car(registration_number)
       slot_no = ParkingLot.get_slot_no(registration_number)
       invoice = ParkingLot.unpark_car(slot_no)
