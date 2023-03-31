@@ -16,9 +16,9 @@ class Invoice < Sequel::Model DATABASE[:invoices]
     end
   end
 
-  def self.create(car_id, entry_time)
-    duration = Time.now - entry_time
-    invoice_amount = invoice_amount(duration)
+  def self.create(car_id, entry_time, exit_time = Time.now)
+    duration = exit_time - entry_time
+    invoice_amount = invoice_amount duration
     super(car_id:, entry_time:, duration:, invoice_amount:)
   end
 
