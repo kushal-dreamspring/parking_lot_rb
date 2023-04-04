@@ -9,12 +9,14 @@ module ParkingLot
 
       slot = Slot.where(car_id: nil).order(:id).first.update(car_id: car.id, entry_time: Time.now).save
 
+      puts "Car successfully parked at #{slot.id}!!"
       slot.id
     rescue Sequel::ValidationFailed => e
       case e.message
-      when 'car_id is already taken' then 'Car already Parked'
+      when 'car_id is already taken' then puts 'Car already Parked'
+      when 'registration_number is invalid' then puts 'Registration Number is invalid'
       else
-        e.message
+        puts e.message
       end
     end
   end

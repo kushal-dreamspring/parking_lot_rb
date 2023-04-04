@@ -3,10 +3,10 @@
 # Controller module for Parking Lot
 module ParkingLot
   def self.all_invoices
-    DATABASE[:invoices].all
+    DATABASE[:invoices].join(:cars, id: :car_id).all
   end
 
   def self.invoice(invoice_id)
-    DATABASE[:invoices].where(id: invoice_id).first
+    DATABASE[:cars].join(DATABASE[:invoices].where(id: invoice_id), car_id: :id).first
   end
 end
