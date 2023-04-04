@@ -6,23 +6,13 @@ describe 'Park' do
   context 'when registration_number is invalid' do
     registration_number = 'UP32EA719'
 
-    before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
-    end
-
     it 'should not park the car' do
-      response = ParkingLot.park_car(registration_number)
-
-      expect(response).to eq('registration_number is invalid')
+      expect { ParkingLot.park_car(registration_number) }.to output("Registration Number is invalid\n").to_stdout
     end
   end
 
   context 'when car is not parked' do
     registration_number = 'UP32EA7196'
-
-    before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
-    end
 
     it 'return the parking-slot-identifier' do
       response = ParkingLot.park_car(registration_number)
@@ -45,14 +35,11 @@ describe 'Park' do
     registration_number = 'UP32EA7196'
 
     before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
       ParkingLot.park_car(registration_number)
     end
 
     it 'should not park a car' do
-      response = ParkingLot.park_car(registration_number)
-
-      expect(response).to eq('Car already Parked')
+      expect { ParkingLot.park_car(registration_number) }.to output("Car already Parked\n").to_stdout
     end
   end
 end

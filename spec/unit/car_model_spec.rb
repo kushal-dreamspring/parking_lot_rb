@@ -3,12 +3,6 @@
 require 'rspec'
 
 RSpec.describe 'Car' do
-  before do
-    DATABASE['UPDATE slots SET car_id = NULL, entry_time = NULL WHERE car_id IS NOT NULL']
-    DATABASE['DELETE FROM cars']
-    DATABASE['DELETE FROM invoices']
-  end
-
   context 'when registration number is not present' do
     it 'should throw validation error' do
       expect { Car.create(registration_number: nil) }.to raise_error(Sequel::ValidationFailed)

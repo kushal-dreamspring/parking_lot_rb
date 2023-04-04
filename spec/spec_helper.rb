@@ -2,7 +2,10 @@
 
 RSpec.configure do |config|
   config.around(:each) do |example|
-    DATABASE.transaction(rollback: :always, auto_savepoint: true) { example.run }
+    example.run
+    DATABASE[:slots].exclude(car_id: nil).update(car_id: nil, entry_time: nil)
+    DATABASE[:invoices].delete
+    DATABASE[:cars].delete
   end
 
   config.expect_with :rspec do |expectations|

@@ -3,12 +3,6 @@
 require 'rspec'
 
 RSpec.describe 'Invoice' do
-  before do
-    DATABASE['UPDATE slots SET car_id = NULL, entry_time = NULL WHERE car_id IS NOT NULL']
-    DATABASE['DELETE FROM cars']
-    DATABASE['DELETE FROM invoices']
-  end
-
   context 'when car is not present' do
     it 'should raise a foreign key constraint error' do
       expect { Invoice.create(0, Time.now) }.to raise_error(Sequel::ForeignKeyConstraintViolation)
@@ -19,9 +13,6 @@ RSpec.describe 'Invoice' do
     car_id = ''
 
     before do
-      DATABASE['UPDATE slots SET car_id = NULL, entry_time = NULL WHERE car_id IS NOT NULL']
-      DATABASE['DELETE FROM cars']
-      DATABASE['DELETE FROM invoices']
       car_id = Car.create(registration_number: 'UP32EA6196')[:id]
     end
 

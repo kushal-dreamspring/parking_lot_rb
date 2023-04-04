@@ -4,10 +4,6 @@ describe 'Unpark' do
   ParkingLot.initialize_app
 
   context 'when car is not parked' do
-    before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
-    end
-
     it 'should return that car not found' do
       registration_number = 'UP32EA7196'
       slot_id = ParkingLot.get_slot_no(registration_number)
@@ -19,7 +15,6 @@ describe 'Unpark' do
     registration_number = 'UP32EA7196'
 
     before do
-      DATABASE['update slots set car_id = NULL, entry_time = NULL where car_id is not null']
       ParkingLot.park_car(registration_number)
     end
 
