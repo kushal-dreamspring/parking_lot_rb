@@ -16,40 +16,59 @@ require_relative '../../controller/unpark'
 
 RSpec.describe 'Parking' do
   it 'should park a car' do
-    pending 'Not yet implemented'
-    response = ''
-    expect(response).to eq('Car Parked Successfully')
+    expect { system('RACK_ENV="test" ./app.rb -p UP32EA7196') }
+      .to output(/Car successfully parked at \d!!/).to_stdout_from_any_process
   end
 
-  it 'should find the car parked' do
-    pending 'Not yet implemented'
-    response = ''
-    expect(response).to eq('Invalid Car Registration Number')
+  it 'should unpark a parked car and generate invoice' do
+    system('RACK_ENV="test" ./app.rb -p UP32EA7196')
+    expect { system('echo | RACK_ENV="test" ./app.rb -u UP32EA7196') }
+      .to output(
+        %r{Car parked at \d
+Do you want to unpark it\? \(Y/n\)
+
+Invoice Details:
+Invoice number: (\d*)
+Registration Number: (\d*)
+Entry Time: ([\d:+ -]*)
+Exit Time: ([\d:+ -]*)
+Duration: (\d*)
+Amount: (\d*)
+}
+      ).to_stdout_from_any_process
   end
 
   it 'list all the cars in the parking lot' do
-    pending 'Not yet implemented'
-    response = ''
-    expect(response).to eq('Slot already occupied')
+    expect { system('RACK_ENV="test" ./app.rb --all-cars') }
+      .to output(
+        /Car ID\tRegistration Number\tEntry Time
+((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*))*/
+      ).to_stdout_from_any_process
   end
 end
 
 RSpec.describe 'Invoice' do
-  it 'should generate an invoice when the car unparked' do
-    pending 'Not yet implemented'
-    response = ''
-    expect(response).to eq('Invalid Car Registration Number')
+  it 'display the invoice details' do
+    system('RACK_ENV="test" ./app.rb -p UP32EA7196')
+    response = `echo | RACK_ENV="test" ./app.rb -u UP32EA7196`
+    invoice_id = response.scan(/\d+/)[1].to_i
+    expect { system("RACK_ENV=\"test\" ./app.rb -i #{invoice_id}") }
+      .to output(
+        /Invoice Details:
+Invoice number: (\d*)
+Registration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}
+Entry Time: ([\d:+ -]*)
+Exit Time: ([\d:+ -]*)
+Duration: (\d*)
+Amount: (\d*)/
+      ).to_stdout_from_any_process
   end
 
   it 'list all the invoices' do
-    pending 'Not yet implemented'
-    response = ''
-    expect(response).to eq('Slot already occupied')
-  end
-
-  it 'display the invoice details' do
-    pending 'Not yet implemented'
-    response = ''
-    expect(response).to eq('Slot already occupied')
+    expect { system('RACK_ENV="test" ./app.rb --all-invoices') }
+      .to output(
+        /Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount
+((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*) ([\d:+ -]*) (\d*) (\d*))*/
+      ).to_stdout_from_any_process
   end
 end
