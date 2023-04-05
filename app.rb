@@ -6,9 +6,10 @@ require 'time'
 require 'sequel'
 require 'optparse'
 
-ENV['RACK_ENV'] = 'development' unless ENV['RACK_ENV']
 DATABASE = Sequel.connect(
-  "postgres://postgres:7dgA7ycUvtPxVm4@parking-lot.cmwearec5mjd.ap-south-1.rds.amazonaws.com:5432/#{ENV['RACK_ENV']}"
+  "postgres://postgres:7dgA7ycUvtPxVm4@parking-lot.cmwearec5mjd.ap-south-1.rds.amazonaws.com:5432/#{
+ENV['RACK_ENV'] || 'development'
+}"
 )
 
 require_relative './model/car'
@@ -70,6 +71,9 @@ ParkingLot.initialize_app
 parser = OptionParser.new
 parser.banner
 
+parser.on('') do
+  puts "Error: No option specified\nUsage: app [options]\nEnter 'app.rb --help' for options list"
+end
 parser.on('-p [REG_NO]', '--park', 'Park Car [Registration Number]') do |registration_number|
   ParkingLot.park_car(registration_number)
 end
