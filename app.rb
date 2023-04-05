@@ -7,7 +7,9 @@ require 'sequel'
 require 'optparse'
 
 ENV['RACK_ENV'] = 'development' unless ENV['RACK_ENV']
-DATABASE = Sequel.connect("postgres://localhost:5432/#{ENV['RACK_ENV']}")
+DATABASE = Sequel.connect(
+  "postgres://postgres:7dgA7ycUvtPxVm4@parking-lot.cmwearec5mjd.ap-south-1.rds.amazonaws.com:5432/#{ENV['RACK_ENV']}"
+)
 
 require_relative './model/car'
 require_relative './model/invoice'

@@ -3,7 +3,7 @@
 require 'time'
 require 'sequel'
 
-DATABASE = Sequel.connect('postgres://localhost:5432/test')
+DATABASE = Sequel.connect('postgres://postgres:7dgA7ycUvtPxVm4@parking-lot.cmwearec5mjd.ap-south-1.rds.amazonaws.com:5432/test')
 
 require_relative '../../model/car'
 require_relative '../../model/invoice'
