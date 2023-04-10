@@ -25,5 +25,4 @@ class Invoice < Sequel::Model DATABASE[:invoices]
   def validate
     validates_presence %i[car_id entry_time]
   end
-
 end

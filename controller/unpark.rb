@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Controller module for Parking Lot
-module ParkingLot
-  def self.get_slot_no(registration_number)
+# class for Controller
+class Controller
+  def get_slot_no(registration_number)
     slot = Slot.where(
       car_id: DATABASE[:cars].select(:id).where(registration_number:)
     ).call(:first)
@@ -12,7 +12,7 @@ module ParkingLot
     nil
   end
 
-  def self.unpark_car(slot_id)
+  def unpark_car(slot_id)
     slot = Slot.where(id: slot_id).first
     invoice = Invoice.create(slot[:car_id], slot[:entry_time])
 
