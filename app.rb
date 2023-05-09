@@ -9,7 +9,7 @@ require 'optparse'
 DB_URL = if ENV['RACK_ENV'] == 'test'
            'sqlite://db/test.sqlite'
          else
-           'postgres://postgres:7dgA7ycUvtPxVm4@parking-lot.cmwearec5mjd.ap-south-1.rds.amazonaws.com:5432/development'
+           'postgres://postgres:7dgA7ycUvtPxVm4@exercisedb.cmwearec5mjd.ap-south-1.rds.amazonaws.com:5432/development'
          end
 
 DATABASE = Sequel.connect(DB_URL)
