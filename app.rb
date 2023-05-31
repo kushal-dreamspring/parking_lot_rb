@@ -51,7 +51,8 @@ class App
   end
 
   def print_invoice(invoice)
-    puts "
+    if invoice
+      puts "
 Invoice Details:
 Invoice number: #{invoice[:id]}
 Registration Number: #{invoice[:registration_number]}
@@ -59,6 +60,9 @@ Entry Time: #{invoice[:entry_time]}
 Exit Time: #{invoice[:exit_time]}
 Duration: #{invoice[:duration]}
 Amount: #{invoice[:invoice_amount]}"
+    else
+      puts 'No Invoice Found'
+    end
   end
 
   def find_and_unpark_car(registration_number)
@@ -78,17 +82,26 @@ Amount: #{invoice[:invoice_amount]}"
 
   def print_all_invoices
     invoices = @controller.all_invoices
-    puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
-    invoices.each do |invoice|
-      puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time]}\t#{invoice[:exit_time]}\t#{invoice[:duration]}\t\t#{invoice[:invoice_amount]}"
+    if !invoices.empty?
+      puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
+      invoices.each do |invoice|
+        puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time]}\t#{invoice[:exit_time]}\t#{invoice[:duration]}\t\t#{invoice[:invoice_amount]}"
+      end
+    else
+      puts 'No Invoice Found'
     end
   end
 
   def print_all_parked_cars
     cars = @controller.all_parked_cars
-    puts "Car ID\tRegistration Number\tEntry Time"
-    cars.each do |car|
-      puts "#{car[:id]}\t#{car[:registration_number]}\t\t#{car[:entry_time]}"
+
+    if !cars.empty?
+      puts "Slot ID\tRegistration Number\tEntry Time"
+      cars.each do |car|
+        puts "#{car[:id]}\t#{car[:registration_number]}\t\t#{car[:entry_time]}"
+      end
+    else
+      puts 'No Car Found'
     end
   end
 end
