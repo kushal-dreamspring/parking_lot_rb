@@ -51,7 +51,8 @@ class App
   end
 
   def print_invoice(invoice)
-    puts "
+    if invoice
+      puts "
 Invoice Details:
 Invoice number: #{invoice[:id]}
 Registration Number: #{invoice[:registration_number]}
@@ -59,6 +60,9 @@ Entry Time: #{invoice[:entry_time]}
 Exit Time: #{invoice[:exit_time]}
 Duration: #{invoice[:duration]}
 Amount: #{invoice[:invoice_amount]}"
+    else
+      puts 'No Invoice Found'
+    end
   end
 
   def find_and_unpark_car(registration_number)
