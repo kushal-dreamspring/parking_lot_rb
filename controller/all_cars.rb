@@ -3,6 +3,6 @@
 # class for Controller
 class Controller
   def all_parked_cars
-    Slot.exclude(car_id: nil).join(:cars, id: :car_id).all
+    Car.join(Slot.exclude(car_id: nil), car_id: :id).all
   end
 end

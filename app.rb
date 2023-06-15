@@ -86,7 +86,7 @@ Amount: #{invoice[:invoice_amount]}"
 
   def print_all_parked_cars
     cars = @controller.all_parked_cars
-    puts "Car ID\tRegistration Number\tEntry Time"
+    puts "Slot ID\tRegistration Number\tEntry Time"
     cars.each do |car|
       puts "#{car[:id]}\t#{car[:registration_number]}\t\t#{car[:entry_time]}"
     end
