@@ -14,7 +14,8 @@ class Controller
 
   def unpark_car(slot_id)
     slot = Slot.where(id: slot_id).first
-    invoice = Invoice.create(slot[:car_id], slot[:entry_time])
+    invoice_id = Invoice.create(slot[:car_id], slot[:entry_time]).id
+    invoice = Car.join(Invoice.where(id: invoice_id), car_id: :id).first
 
     slot.update(car_id: nil, entry_time: nil)
     invoice
