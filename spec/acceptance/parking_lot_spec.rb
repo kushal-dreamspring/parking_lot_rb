@@ -23,15 +23,25 @@ RSpec.describe 'Parking' do
   it 'should unpark a parked car and generate invoice' do
     system('RACK_ENV="test" ./app.rb -p UP32EA7196')
     expect { system('echo | RACK_ENV="test" ./app.rb -u UP32EA7196') }
-      .to output(/Car parked at \d/).to_stdout_from_any_process
+      .to output(%r{Car parked at \d
+Do you want to unpark it\? \(Y/n\)
+
+Invoice Details:
+Invoice number: (\d*)
+Registration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}
+Entry Time: ([\d:+ -]*)
+Exit Time: ([\d:+ -]*)
+Duration: (\d*)
+Amount: (\d*)
+}).to_stdout_from_any_process
   end
 
   it 'list all the cars in the parking lot' do
     expect { system('RACK_ENV="test" ./app.rb --all-cars') }
       .to output(
-            /Car ID\tRegistration Number\tEntry Time
+        /Car ID\tRegistration Number\tEntry Time
 ((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*))*/
-          ).to_stdout_from_any_process
+      ).to_stdout_from_any_process
   end
 end
 
@@ -42,21 +52,21 @@ RSpec.describe 'Invoice' do
     invoice_id = response.scan(/\d+/)[1].to_i
     expect { system("RACK_ENV=\"test\" ./app.rb -i #{invoice_id}") }
       .to output(
-            /Invoice Details:
+        /Invoice Details:
 Invoice number: (\d*)
 Registration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}
 Entry Time: ([\d:+ -]*)
 Exit Time: ([\d:+ -]*)
 Duration: (\d*)
 Amount: (\d*)/
-          ).to_stdout_from_any_process
+      ).to_stdout_from_any_process
   end
 
   it 'list all the invoices' do
     expect { system('RACK_ENV="test" ./app.rb --all-invoices') }
       .to output(
-            /Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount
+        /Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount
 ((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*) ([\d:+ -]*) (\d*) (\d*))*/
-          ).to_stdout_from_any_process
+      ).to_stdout_from_any_process
   end
 end
