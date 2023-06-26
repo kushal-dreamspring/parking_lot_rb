@@ -42,49 +42,25 @@ class App
       find_and_unpark_car(registration_number)
     end
     @parser.on('-i [INV_NO]', '--invoice', 'Get Invoice  [Invoice Number]') do |invoice_number|
-      print_invoice(@controller.invoice(invoice_number))
+      @controller.print_invoice(invoice_number)
     end
-    @parser.on('--all-invoices', 'Get All Invoices') { print_all_invoices }
+    @parser.on('--all-invoices', 'Get All Invoices') { @controller.print_all_invoices }
     @parser.on('--all-cars', 'Get All Cars') { print_all_parked_cars }
     @parser.on('-r', '--reset', 'Reset App') { @controller.reset_db }
     @parser.on('-h', '--help', 'List all options') { puts @parser }
-  end
-
-  def print_invoice(invoice)
-    if invoice
-      puts "
-Invoice Details:
-Invoice number: #{invoice[:id]}
-Registration Number: #{invoice[:registration_number]}
-Entry Time: #{invoice[:entry_time]}
-Exit Time: #{invoice[:exit_time]}
-Duration: #{invoice[:duration]}
-Amount: #{invoice[:invoice_amount]}"
-    else
-      puts 'No Invoice Found'
-    end
   end
 
   def find_and_unpark_car(registration_number)
     slot_no = @controller.get_slot_no registration_number
 
     if slot_no
-      puts "Car parked at #{slot_no}"
-      puts 'Do you want to unpark it? (Y/n)'
+      puts "Car parked at #{slot_no}\nDo you want to unpark it? (Y/n)"
 
       return if gets == "n\n"
 
-      print_invoice(@controller.unpark_car(slot_no))
+      @controller.print_invoice(@controller.unpark_car(slot_no).id)
     else
       puts 'car not found'
-    end
-  end
-
-  def print_all_invoices
-    invoices = @controller.all_invoices
-    puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
-    invoices.each do |invoice|
-      puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time]}\t#{invoice[:exit_time]}\t#{invoice[:duration]}\t\t#{invoice[:invoice_amount]}"
     end
   end
 
