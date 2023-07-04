@@ -27,10 +27,14 @@ Amount: #{invoice[:invoice_amount]}"
   end
 
   def print_all_invoices
-    invoices = all_invoices
-    puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
-    invoices.each do |invoice|
-      puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time].strftime('%B %d, %Y %T IST')}\t#{invoice[:exit_time].strftime('%B %d, %Y %T IST')}\t#{invoice[:duration]} secs\t\t#{invoice[:invoice_amount]}"
+    invoices = @controller.all_invoices
+    if invoices.empty?
+      puts 'No Invoice Found'
+    else
+      puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
+      invoices.each do |invoice|
+        puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time]}\t#{invoice[:exit_time]}\t#{invoice[:duration]}\t\t#{invoice[:invoice_amount]}"
+      end
     end
   end
 end
