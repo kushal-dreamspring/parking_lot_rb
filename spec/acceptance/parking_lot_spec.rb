@@ -39,7 +39,7 @@ Amount: (\d*)
   it 'list all the cars in the parking lot' do
     expect { system('RACK_ENV="test" ./app.rb --all-cars') }
       .to output(
-        /Car ID\tRegistration Number\tEntry Time
+        /Slot ID\tRegistration Number\tEntry Time
 ((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*))*/
       ).to_stdout_from_any_process
   end
