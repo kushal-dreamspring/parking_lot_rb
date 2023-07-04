@@ -61,7 +61,7 @@ RSpec.describe 'Parking' do
         expect { system('echo | RACK_ENV="test" ./app.rb -u UP32EA7196') }
           .to output(
             %r{Car parked at \d\nDo you want to unpark it\? \(Y/n\)\n\nInvoice Details:
-Invoice number: (\d*)\nRegistration Number: (\d*)\nEntry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)
+Invoice number: (\d*)\nRegistration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}\nEntry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)
 Duration: (\d*)\nAmount: (\d*)}
           ).to_stdout_from_any_process
       end
@@ -90,7 +90,7 @@ Duration: (\d*)\nAmount: (\d*)}
           .to output(
             /Invoice Details:\nInvoice number: (\d*)\nRegistration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}
 Entry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)\nDuration: (\d*)\nAmount: (\d*)/
-              ).to_stdout_from_any_process
+          ).to_stdout_from_any_process
       end
     end
   end
@@ -113,7 +113,7 @@ Entry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)\nDuration: (\d*)\nAmount: (\d*)/
           .to output(
             /Slot ID\tRegistration Number\tEntry Time
 ((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*))*/
-              ).to_stdout_from_any_process
+          ).to_stdout_from_any_process
       end
     end
   end
@@ -137,7 +137,7 @@ Entry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)\nDuration: (\d*)\nAmount: (\d*)/
           .to output(
             /Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount
 ((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*) ([\d:+ -]*) (\d*) (\d*))*/
-              ).to_stdout_from_any_process
+          ).to_stdout_from_any_process
       end
     end
   end
