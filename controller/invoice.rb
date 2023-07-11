@@ -27,7 +27,7 @@ Amount: #{invoice[:invoice_amount]}"
   end
 
   def print_all_invoices
-    invoices = @controller.all_invoices
+    invoices = all_invoices
     if invoices.empty?
       puts 'No Invoice Found'
     else
