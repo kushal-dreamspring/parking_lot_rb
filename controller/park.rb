@@ -4,9 +4,14 @@
 class Controller
   def park_car(registration_number)
     car_id = (Car.where(registration_number:).first || Car.create(registration_number:))[:id]
-    slot = Slot.where(car_id: nil).order(:id).first.update(car_id:, entry_time: Time.now).save
+    slot = Slot.where(car_id: nil).order(:id).first
 
-    puts "Car successfully parked at #{slot.id}!!"
+    if slot
+      slot.update(car_id:, entry_time: Time.now).save
+      puts "Car successfully parked at #{slot.id}!!"
+    else
+      puts 'Parking Lot is Full!!'
+    end
   rescue Sequel::ValidationFailed => e
     if e.message == 'car_id is already taken'
       puts 'Car already Parked'
