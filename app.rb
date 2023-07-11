@@ -78,17 +78,26 @@ Amount: #{invoice[:invoice_amount]}"
 
   def print_all_invoices
     invoices = @controller.all_invoices
-    puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
-    invoices.each do |invoice|
-      puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time]}\t#{invoice[:exit_time]}\t#{invoice[:duration]}\t\t#{invoice[:invoice_amount]}"
+    if invoices.empty?
+      puts 'No Invoice Found'
+    else
+      puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
+      invoices.each do |invoice|
+        puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time]}\t#{invoice[:exit_time]}\t#{invoice[:duration]}\t\t#{invoice[:invoice_amount]}"
+      end
     end
   end
 
   def print_all_parked_cars
     cars = @controller.all_parked_cars
-    puts "Slot ID\tRegistration Number\tEntry Time"
-    cars.each do |car|
-      puts "#{car[:id]}\t#{car[:registration_number]}\t\t#{car[:entry_time]}"
+
+    if cars.empty?
+      puts 'No Car Found'
+    else
+      puts "Slot ID\tRegistration Number\tEntry Time"
+      cars.each do |car|
+        puts "#{car[:id]}\t#{car[:registration_number]}\t\t#{car[:entry_time]}"
+      end
     end
   end
 end
