@@ -60,10 +60,11 @@ RSpec.describe 'Parking' do
       it 'should unpark a parked car and generate invoice' do
         expect { system('echo | RACK_ENV="test" ./app.rb -u UP32EA7196') }
           .to output(
-                %r{Car parked at \d\nDo you want to unpark it\? \(Y/n\)\n\nInvoice Details:
-Invoice number: (\d*)\nRegistration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}\nEntry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)
-Duration: (\d*)\nAmount: (\d*)}
-              ).to_stdout_from_any_process
+            %r{Car parked at \d\nDo you want to unpark it\? \(Y/n\)\n
+Invoice Details:
+Invoice number: (\d*)\nRegistration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}
+Entry Time: [\w,: ]* IST\nExit Time: [\w,: ]* IST\nDuration: (\d*) secs\nAmount: (\d*)}
+          ).to_stdout_from_any_process
       end
     end
   end
@@ -72,7 +73,7 @@ Duration: (\d*)\nAmount: (\d*)}
     context 'when no invoice is present' do
       it 'should print \'No Invoice Found\'' do
         expect { system('RACK_ENV="test" ./app.rb -i 1') }
-          .to output("Invoice Not Found\n").to_stdout_from_any_process
+          .to output("No Invoice Found\n").to_stdout_from_any_process
       end
     end
 
@@ -88,9 +89,9 @@ Duration: (\d*)\nAmount: (\d*)}
       it 'display the invoice details' do
         expect { system("RACK_ENV=\"test\" ./app.rb -i #{invoice_id}") }
           .to output(
-                /Invoice Details:\nInvoice number: (\d*)\nRegistration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}
-Entry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)\nDuration: (\d*)\nAmount: (\d*)/
-              ).to_stdout_from_any_process
+            /Invoice Details:\nInvoice number: (\d*)\nRegistration Number: [A-Za-z]{2}[a-zA-Z0-9]{8}
+Entry Time: [\w,: ]* IST\nExit Time: [\w,: ]* IST\nDuration: (\d*) secs\nAmount: (\d*)/
+          ).to_stdout_from_any_process
       end
     end
   end
@@ -111,9 +112,9 @@ Entry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)\nDuration: (\d*)\nAmount: (\d*)/
       it 'list all the cars in the parking lot' do
         expect { system('RACK_ENV="test" ./app.rb --all-cars') }
           .to output(
-                /Slot ID\tRegistration Number\tEntry Time
+            /Slot ID\tRegistration Number\tEntry Time
 ((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*))*/
-              ).to_stdout_from_any_process
+          ).to_stdout_from_any_process
       end
     end
   end
@@ -135,9 +136,9 @@ Entry Time: ([\d:+ -]*)\nExit Time: ([\d:+ -]*)\nDuration: (\d*)\nAmount: (\d*)/
       it 'list all the invoices' do
         expect { system('RACK_ENV="test" ./app.rb --all-invoices') }
           .to output(
-                /Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount
+            /Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount
 ((\d*) [A-Za-z]{2}[a-zA-Z0-9]{8} ([\d:+ -]*) ([\d:+ -]*) (\d*) (\d*))*/
-              ).to_stdout_from_any_process
+          ).to_stdout_from_any_process
       end
     end
   end
