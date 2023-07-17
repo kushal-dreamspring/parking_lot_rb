@@ -16,6 +16,10 @@ describe 'Invoice' do
       invoice = controller.invoice(1)
       expect(invoice).to be_nil
     end
+
+    it 'should return No Invoice Found' do
+      expect { controller.print_invoice(1) }.to output("No Invoice Found\n").to_stdout_from_any_process
+    end
   end
 
   context 'after car has been unparked' do
