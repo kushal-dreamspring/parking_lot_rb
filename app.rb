@@ -14,19 +14,14 @@ DB_URL = if ENV['RACK_ENV'] == 'test'
 
 DATABASE = Sequel.connect(DB_URL)
 
-require_relative './model/car'
-require_relative './model/invoice'
-require_relative './model/slot'
-require_relative './controller/initialize_app'
-require_relative './controller/invoice'
-require_relative './controller/park'
-require_relative './controller/unpark'
-require_relative './controller/all_cars'
+require_relative './controller/slot_controller'
+require_relative './controller/invoice_controller'
 
 # module for menu-driven app
 class App
   def initialize
-    @controller = Controller.new
+    @slot_controller = SlotController.new
+    @invoice_controller = InvoiceController.new
     @parser = OptionParser.new
     parser_options
 
@@ -36,57 +31,18 @@ class App
 
   def parser_options
     @parser.on('-p [REG_NO]', '--park', 'Park Car [Registration Number]') do |registration_number|
-      @controller.park_car(registration_number)
+      @slot_controller.park_car(registration_number)
     end
     @parser.on('-u [REG_NO]', '--unpark', 'Find and Unpark Car [Registration Number]') do |registration_number|
-      find_and_unpark_car(registration_number)
+      @slot_controller.find_and_unpark_car(registration_number)
     end
-    @parser.on('-i [INV_NO]', '--invoice', 'Get Invoice  [Invoice Number]') do |invoice_number|
-      @controller.print_invoice(invoice_number)
+    @parser.on('-i [INV_NO]', '--invoice', 'Get Invoice  [Invoice Number]') do |invoice_id|
+      @invoice_controller.invoice(invoice_id)
     end
-    @parser.on('--all-invoices', 'Get All Invoices') { @controller.print_all_invoices }
-    @parser.on('--all-cars', 'Get All Cars') { print_all_parked_cars }
-    @parser.on('-r', '--reset', 'Reset App') { @controller.reset_db }
+    @parser.on('--all-invoices', 'Get All Invoices') { @invoice_controller.all_invoices }
+    @parser.on('--all-cars', 'Get All Cars') { @slot_controller.all_parked_cars }
+    @parser.on('-r', '--reset', 'Reset App') { @slot_controller.reset_db }
     @parser.on('-h', '--help', 'List all options') { puts @parser }
-  end
-
-  def find_and_unpark_car(registration_number)
-    slot_no = @controller.get_slot_no registration_number
-
-    if slot_no
-      puts "Car parked at #{slot_no}\nDo you want to unpark it? (Y/n)"
-
-      return if gets == "n\n"
-
-      @controller.print_invoice(@controller.unpark_car(slot_no).id)
-    else
-      puts 'car not found'
-    end
-  end
-
-  def print_all_invoices
-    invoices = @controller.all_invoices
-    if invoices.empty?
-      puts 'No Invoice Found'
-    else
-      puts "Invoice number\tRegistration Number\tEntry Time\t\t\tExit Time\t\t\tDuration\tAmount"
-      invoices.each do |invoice|
-        puts "#{invoice[:id]}\t\t#{invoice[:registration_number]}\t\t#{invoice[:entry_time]}\t#{invoice[:exit_time]}\t#{invoice[:duration]}\t\t#{invoice[:invoice_amount]}"
-      end
-    end
-  end
-
-  def print_all_parked_cars
-    cars = @controller.all_parked_cars
-
-    if cars.empty?
-      puts 'No Car Found'
-    else
-      puts "Slot ID\tRegistration Number\tEntry Time"
-      cars.each do |car|
-        puts "#{car[:id]}\t#{car[:registration_number]}\t\t#{car[:entry_time]}"
-      end
-    end
   end
 end
 

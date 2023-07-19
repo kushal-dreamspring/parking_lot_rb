@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'rspec'
+require_relative '../../model/slot'
 
-RSpec.describe 'Slot' do
+RSpec.describe Slot do
   context 'when car is already parked' do
     car_id = ''
 

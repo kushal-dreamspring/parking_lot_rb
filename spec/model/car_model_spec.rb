@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rspec'
+require_relative '../../model/car'
 
 RSpec.describe 'Car' do
   context 'when registration number is not present' do

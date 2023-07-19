@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require 'rspec'
+require 'sequel'
+require 'time'
+
+DATABASE = Sequel.connect('sqlite://db/test.sqlite')
+
 RSpec.configure do |config|
   config.around(:each) do |example|
     example.run

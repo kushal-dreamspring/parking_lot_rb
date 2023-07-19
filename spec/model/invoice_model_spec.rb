@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rspec'
+require_relative '../../model/invoice'
 
 RSpec.describe 'Invoice' do
   context 'when car is not present' do
