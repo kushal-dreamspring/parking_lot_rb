@@ -5,12 +5,9 @@
 require 'time'
 require 'sequel'
 require 'optparse'
+require 'dotenv/load'
 
-DB_URL = if ENV['RACK_ENV'] == 'test'
-           'sqlite://db/test.sqlite'
-         else
-           'postgres://postgres:7dgA7ycUvtPxVm4@exercisedb.cmwearec5mjd.ap-south-1.rds.amazonaws.com:5432/development'
-         end
+DB_URL = ENV['RACK_ENV'] == 'test' ? 'sqlite://db/test.sqlite' : ENV['DB_URL']
 
 DATABASE = Sequel.connect(DB_URL)
 
