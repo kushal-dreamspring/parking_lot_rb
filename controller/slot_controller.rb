@@ -2,7 +2,6 @@
 
 require_relative '../model/slot'
 require_relative '../model/car'
-require_relative '../model/invoice'
 
 require_relative '../views/slot_view'
 
@@ -30,11 +29,11 @@ class SlotController
   end
 
   def find_and_unpark_car(registration_number)
-    slot = get_slot(registration_number)
+    slot = Slot.get_slot(registration_number)
 
     SlotView.print_found_car(slot)
 
-    InvoiceView.print_invoice(unpark_car(slot)) if slot
+    InvoiceView.print_invoice(Slot.unpark_car(slot)) if slot
   end
 
   def all_parked_cars
@@ -45,24 +44,5 @@ class SlotController
     Slot.exclude(car_id: nil).update(car_id: nil, entry_time: nil)
     DATABASE[:invoices].delete
     DATABASE[:cars].delete
-  end
-
-  private
-
-  def get_slot(registration_number)
-    Slot.where(
-      car_id: DATABASE[:cars].select(:id).where(registration_number:)
-    ).call(:first)
-  end
-
-  def unpark_car(slot)
-    invoice_id = Invoice.create(slot[:car_id], slot[:entry_time]).id
-    invoice = Invoice.where(id: invoice_id).join(
-      Car.select(Sequel[:id].as(:car_id), :registration_number),
-      car_id: :car_id
-    ).first
-
-    slot.update(car_id: nil, entry_time: nil)
-    invoice
   end
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './car'
+
 # Class for Invoice
 class Invoice < Sequel::Model DATABASE[:invoices]
   plugin :validation_helpers
@@ -24,5 +26,16 @@ class Invoice < Sequel::Model DATABASE[:invoices]
 
   def validate
     validates_presence %i[car_id entry_time]
+  end
+
+  def self.all_invoices
+    join(Car.select(Sequel[:id].as(:car_id), :registration_number), car_id: :car_id).all
+  end
+
+  def self.find_by_id(invoice_id)
+    where(id: invoice_id).join(
+      Car.select(Sequel[:id].as(:car_id), :registration_number),
+      car_id: :car_id
+    ).first
   end
 end
