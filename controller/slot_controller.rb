@@ -2,12 +2,13 @@
 
 require_relative '../model/slot'
 require_relative '../model/car'
-
 require_relative '../views/slot_view'
 
 # Controller Class for Slot
 class SlotController
-  def initialize(size = 10)
+
+  DEFAULT_LOT_SIZE = 10
+  def initialize(size = DEFAULT_LOT_SIZE)
     return unless Slot.count.zero?
 
     size.times do
