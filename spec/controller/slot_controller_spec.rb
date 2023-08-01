@@ -8,8 +8,8 @@ RSpec.describe SlotController do
   controller = SlotController.new
   registration_number = 'UP32EA7196'
 
-  it 'should have 10 slots' do
-    expect(Slot.count).to eq(10)
+  it 'should have 10 slots by default' do
+    expect(Slot.count).to eq(SlotController::DEFAULT_LOT_SIZE)
   end
 
   context 'when no car is parked' do
