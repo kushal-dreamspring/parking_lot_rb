@@ -18,10 +18,7 @@ class Slot < Sequel::Model DATABASE[:slots]
 
   def self.unpark_car(slot)
     invoice_id = Invoice.create(slot[:car_id], slot[:entry_time]).id
-    invoice = Invoice.where(id: invoice_id).join(
-      Car.select(Sequel[:id].as(:car_id), :registration_number),
-      car_id: :car_id
-    ).first
+    invoice = Invoice.find_by_id(invoice_id)
 
     slot.update(car_id: nil, entry_time: nil)
     invoice
