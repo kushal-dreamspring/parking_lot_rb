@@ -6,7 +6,9 @@ require_relative './car'
 class Invoice < Sequel::Model DATABASE[:invoices]
   plugin :validation_helpers
 
-  def self.invoice_amount(duration)
+  def self.invoice_amount(entry_time, exit_time)
+    duration = exit_time - entry_time
+
     if duration <= 10
       100
     elsif duration <= 30
@@ -19,9 +21,8 @@ class Invoice < Sequel::Model DATABASE[:invoices]
   end
 
   def self.create(car_id, entry_time, exit_time = Time.now)
-    duration = exit_time - entry_time
-    invoice_amount = invoice_amount duration
-    super(car_id:, entry_time:, exit_time:, duration:, invoice_amount:)
+    invoice_amount = invoice_amount(entry_time, exit_time)
+    super(car_id:, entry_time:, exit_time:, invoice_amount:)
   end
 
   def validate

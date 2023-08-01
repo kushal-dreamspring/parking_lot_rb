@@ -9,7 +9,6 @@ Sequel.migration do
       foreign_key :car_id, :cars
       DateTime :entry_time
       DateTime :exit_time, default: Sequel::CURRENT_TIMESTAMP
-      int :duration
       int :invoice_amount
     end
   end
