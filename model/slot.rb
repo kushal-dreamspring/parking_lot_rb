@@ -10,10 +10,19 @@ class Slot < Sequel::Model DATABASE[:slots]
     validates_unique :car_id
   end
 
+  def park_car_in_slot(car_id)
+    update(car_id:, entry_time: Time.now)
+    save
+  end
+
   def self.get_slot(registration_number)
     where(
       car_id: DATABASE[:cars].select(:id).where(registration_number:)
     ).call(:first)
+  end
+
+  def self.find_empty_slot
+    where(car_id: nil).order(:id).first
   end
 
   def self.unpark_car(slot)

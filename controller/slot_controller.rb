@@ -17,12 +17,12 @@ class SlotController
   end
 
   def park_car(registration_number)
-    car_id = (Car.where(registration_number:).first || Car.create(registration_number:))[:id]
-    slot = Slot.where(car_id: nil).order(:id).first
+    car_id = Car.get_or_create(registration_number)
+    slot = Slot.find_empty_slot
 
     raise 'Parking Lot is Full!!' unless slot
 
-    slot.update(car_id:, entry_time: Time.now).save
+    slot.park_car_in_slot(car_id)
 
     SlotView.car_parked(slot)
   rescue StandardError => e
