@@ -29,4 +29,18 @@ RSpec.describe 'Invoice' do
       expect(Invoice.invoice_amount(Time.now, Time.now + 100)).to eql(500)
     end
   end
+
+  context 'when invoice is present' do
+    registration_number = 'UP32EA6196'
+    invoice_id = ''
+
+    before do
+      invoice_id = Invoice.create(Car.create(registration_number:).id, Time.now).id
+    end
+
+    it 'should return invoice with car registration number' do
+      invoice = Invoice.find_by_id(invoice_id)
+      expect(invoice[:registration_number]).to eql(registration_number)
+    end
+  end
 end

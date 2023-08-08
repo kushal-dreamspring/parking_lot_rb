@@ -25,11 +25,11 @@ class Slot < Sequel::Model DATABASE[:slots]
     where(car_id: nil).order(:id).first
   end
 
-  def self.unpark_car(slot)
-    invoice_id = Invoice.create(slot[:car_id], slot[:entry_time]).id
+  def unpark_car
+    invoice_id = Invoice.create(car_id, entry_time).id
     invoice = Invoice.find_by_id(invoice_id)
 
-    slot.update(car_id: nil, entry_time: nil)
+    update(car_id: nil, entry_time: nil)
     invoice
   end
 end

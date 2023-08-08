@@ -34,7 +34,7 @@ class SlotController
 
     SlotView.print_found_car(slot)
 
-    InvoiceView.print_invoice(Slot.unpark_car(slot)) if slot
+    InvoiceView.print_invoice(slot.unpark_car) if slot
   end
 
   def all_parked_cars

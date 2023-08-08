@@ -27,8 +27,7 @@ RSpec.describe InvoiceView do
     end
 
     it 'display the invoice details' do
-      invoice = Invoice.find(invoice_id).first
-      invoice[:registration_number] = registration_number
+      invoice = Invoice.find_by_id(invoice_id)
 
       expect { InvoiceView.print_invoice(invoice) }
         .to output(
