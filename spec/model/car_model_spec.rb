@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rspec'
+require_relative '../../model/car'
 
 RSpec.describe 'Car' do
   context 'when registration number is not present' do
@@ -25,13 +25,18 @@ RSpec.describe 'Car' do
 
   context 'when car is already present' do
     registration_number = 'UP32EA7196'
+    car_id = ''
 
     before do
-      Car.create(registration_number:)
+      car_id = Car.create(registration_number:).id
     end
 
     it 'should throw validation error' do
       expect { Car.create(registration_number:) }.to raise_error(Sequel::ValidationFailed)
+    end
+
+    it 'should get the existing car' do
+      expect(Car.get_or_create(registration_number)).to be(car_id)
     end
   end
 end

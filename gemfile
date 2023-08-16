@@ -4,10 +4,12 @@ source 'https://rubygems.org'
 
 gem 'optparse'
 gem 'sequel'
+gem 'pg'
 
 group :development, :test do
   gem 'rspec'
   gem 'sqlite3'
+  gem 'dotenv-rails'
 end
 
 group :development do
